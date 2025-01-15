@@ -198,7 +198,10 @@ final class TestContext private (_seed: Long) extends ExecutionContext { self =>
   def tickAll(): Unit = {
     tick()
     if (!stateRef.tasks.isEmpty) {
-      advance(nextInterval())
+      val next = nextInterval()
+      if (next > Duration.Zero) {
+        advance(next)
+      }
       tickAll()
     }
   }
